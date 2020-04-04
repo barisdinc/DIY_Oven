@@ -9,3 +9,4 @@ Operasyon oldukça basitti;
 
 Ama olay pek de öyle olmadı, LCD 'nin yapışkanını söerken LCD nin bağlantı noktaları kırıldı. Özel üretim olan ve WHIRLPOOL'a ait olan LCD'yi internnete araştırınca komple ön panelle satıldığını ve bulabildiğim en uygun fiyatın 150 euro olduğunu görünce , üstelik bu karantina günlerinde almanın zor olacağını da farkedince kendi çözümümğ kendim üretmeye karar verdim.
 
+proje detaylarını buraya yazmak zor olacagı için hikayesini web sayfamda aşağıdaki linkte yazdım.. buraya teknik detaylarını koyacağım.. hikesi için : http://www.barisdinc.com.tr/2020/04/04/kendi-firinini-kendin-yap/
