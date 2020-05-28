@@ -1,0 +1,1 @@
+scp .pio/build/nanoatmega328/firmware.hex root@192.168.8.88:
