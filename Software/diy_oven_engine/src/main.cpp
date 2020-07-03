@@ -5,12 +5,12 @@
 #define SENSOR3 A2 //Water Tank Temperature
 #define I2CSDA  A4
 #define I2CSCL  A5
-#define ROLE6   2
+#define ROLE6   2  //Back Fan
 #define ROLELER 3
-#define ROLE4   4
-#define ROLE1   5
+#define ROLE4   4  //Middle Heater ????
+#define ROLE1   5  //Top Coolong Fan
 #define ROLE3   6
-#define ROLE2   7
+#define ROLE2   7  //Bottom Heater
 #define V220    8  //INPUT   
 #define WTPUMP  9  //Water Tank Pump
 #define WTHEAT  10 // Water Tank Heater
