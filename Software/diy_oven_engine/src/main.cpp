@@ -27,16 +27,21 @@ bool commandComplete = false;  // whether the command is complete
  char komut;
  char konum;
  
-
-void setup() {
-  Serial.begin(9600);
+ void print_commands()
+ {
   Serial.println("0-Genel");
   Serial.println("1-Ust Fan");
   Serial.println("2-Alt Izgara");
   Serial.println("3-orta Izgara");
   Serial.println("4-Ust Grill");
   Serial.println("6-Motor");
+  Serial.println("8-Water Pump");
+  Serial.println("9-Water Heat");
+ }
 
+void setup() {
+  Serial.begin(9600);
+  print_commands();
   pinMode (ROLELER, OUTPUT) ;
   TCCR2A = 0x23 ;
   TCCR2B = 0x08; // TCCR2B = 0x09 ;
@@ -48,20 +53,13 @@ void setup() {
   pinMode(ROLE3,   OUTPUT);
   pinMode(ROLE4,   OUTPUT);
   pinMode(ROLE6,   OUTPUT);
+  pinMode(WTPUMP,   OUTPUT);
+  pinMode(WTHEAT,   OUTPUT);
   pinMode(EEPROM_ENABLE, OUTPUT);
   pinMode(V220,    INPUT);
 
 }
 void loop() {
- //digitalWrite(ROLE1, HIGH);
- //delay(1000);
- //TCCR2B = 0x09;  //ROLE5
- //delay(1000);
- //digitalWrite(ROLE4, HIGH);
- //delay(1000);
- //digitalWrite(ROLE6, HIGH);
- //TCCR2B = 0x08;  //ROLE5
- //delay(1000);
 
   if (commandComplete)
   {
@@ -79,6 +77,11 @@ void loop() {
     if ((komut=='4') and (konum=='1')) digitalWrite(ROLE4, HIGH);
     if ((komut=='6') and (konum=='0')) digitalWrite(ROLE6, LOW);
     if ((komut=='6') and (konum=='1')) digitalWrite(ROLE6, HIGH);
+    if ((komut=='8') and (konum=='1')) digitalWrite(WTPUMP, HIGH);
+    if ((komut=='8') and (konum=='0')) digitalWrite(WTPUMP, LOW);
+    if ((komut=='9') and (konum=='1')) digitalWrite(WTHEAT, HIGH);
+    if ((komut=='9') and (konum=='0')) digitalWrite(WTHEAT, LOW);
+    if (!((komut <= 9) and (komut >=0))) print_commands();
     Serial.println(digitalRead(ROLE1));
     Serial.println(digitalRead(ROLE2));
     Serial.println(digitalRead(ROLE3));
@@ -86,10 +89,13 @@ void loop() {
     Serial.println(digitalRead(ROLE6));
     int analog1 = analogRead(SENSOR1);
     int analog2 = analogRead(SENSOR2);
-    Serial.print("Analog1 = ");
+    int analog3 = analogRead(SENSOR3);
+    Serial.print("Oven Temp = ");
     Serial.println(analog1);
-    Serial.print("Analog2 = ");
+    Serial.print("Water Level = ");
     Serial.println(analog2);
+    Serial.print("Water Temp  = ");
+    Serial.println(analog3);
     commandComplete = false;
  } //if
  
