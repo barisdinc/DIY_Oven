@@ -1,8 +1,8 @@
 #include "Arduino.h"
 
-#define SENSOR1 A0 //Oven Temperature
-#define SENSOR2 A1 //Water Tank Water Level
-#define SENSOR3 A2 //Water Tank Temperature
+#define SENS_OTMP A0 //Oven Temperature
+#define SENS_WLVL A1 //Water Tank Water Level
+#define SENS_WTMP A2 //Water Tank Temperature
 #define I2CSDA  A4
 #define I2CSCL  A5
 #define ROLE6   2  //Back Fan
@@ -24,8 +24,8 @@ String commandString = "";
 char serial_char;
 bool commandComplete = false;  // whether the command is complete
 
- char komut;
- char konum;
+ char cmd;
+ char state;
  
  void print_commands()
  {
@@ -57,45 +57,48 @@ void setup() {
   pinMode(WTHEAT,   OUTPUT);
   pinMode(EEPROM_ENABLE, OUTPUT);
   pinMode(V220,    INPUT);
+  pinmode(SENS_OTMP, INPUT);
+  pinmode(SENS_WLVL, INPUT);
+  pinmode(SENS_WTMP, INPUT);
 
 }
 void loop() {
 
   if (commandComplete)
   {
-    Serial.println(komut);
-    Serial.println(konum);
-    if ((komut=='0') and (konum=='0')) {Serial.println("pwm off"); TCCR2B = 0x08;  }//ROLE5
-    if ((komut=='0') and (konum=='1')) {Serial.println("pwm on "); TCCR2B = 0x09;  }//ROLE5
-    if ((komut=='1') and (konum=='0')) {Serial.println("fan off"); digitalWrite(ROLE1, LOW);}
-    if ((komut=='1') and (konum=='1')) {Serial.println("fan on "); digitalWrite(ROLE1, HIGH);};
-    if ((komut=='2') and (konum=='0')) digitalWrite(ROLE2, LOW);
-    if ((komut=='2') and (konum=='1')) digitalWrite(ROLE2, HIGH);
-    if ((komut=='3') and (konum=='0')) digitalWrite(ROLE3, LOW);
-    if ((komut=='3') and (konum=='1')) digitalWrite(ROLE3, HIGH);
-    if ((komut=='4') and (konum=='0')) digitalWrite(ROLE4, LOW);
-    if ((komut=='4') and (konum=='1')) digitalWrite(ROLE4, HIGH);
-    if ((komut=='6') and (konum=='0')) digitalWrite(ROLE6, LOW);
-    if ((komut=='6') and (konum=='1')) digitalWrite(ROLE6, HIGH);
-    if ((komut=='8') and (konum=='1')) digitalWrite(WTPUMP, HIGH);
-    if ((komut=='8') and (konum=='0')) digitalWrite(WTPUMP, LOW);
-    if ((komut=='9') and (konum=='1')) digitalWrite(WTHEAT, HIGH);
-    if ((komut=='9') and (konum=='0')) digitalWrite(WTHEAT, LOW);
-    if (!((komut <= 9) and (komut >=0))) print_commands();
+    Serial.println(cmd);
+    Serial.println(state);
+    if ((cmd=='0') and (state=='0')) {Serial.println("pwm off"); TCCR2B = 0x08;  }//ROLE5
+    if ((cmd=='0') and (state=='1')) {Serial.println("pwm on "); TCCR2B = 0x09;  }//ROLE5
+    if ((cmd=='1') and (state=='0')) {Serial.println("fan off"); digitalWrite(ROLE1, LOW);}
+    if ((cmd=='1') and (state=='1')) {Serial.println("fan on "); digitalWrite(ROLE1, HIGH);};
+    if ((cmd=='2') and (state=='0')) digitalWrite(ROLE2, LOW);
+    if ((cmd=='2') and (state=='1')) digitalWrite(ROLE2, HIGH);
+    if ((cmd=='3') and (state=='0')) digitalWrite(ROLE3, LOW);
+    if ((cmd=='3') and (state=='1')) digitalWrite(ROLE3, HIGH);
+    if ((cmd=='4') and (state=='0')) digitalWrite(ROLE4, LOW);
+    if ((cmd=='4') and (state=='1')) digitalWrite(ROLE4, HIGH);
+    if ((cmd=='6') and (state=='0')) digitalWrite(ROLE6, LOW);
+    if ((cmd=='6') and (state=='1')) digitalWrite(ROLE6, HIGH);
+    if ((cmd=='8') and (state=='1')) digitalWrite(WTPUMP, HIGH);
+    if ((cmd=='8') and (state=='0')) digitalWrite(WTPUMP, LOW);
+    if ((cmd=='9') and (state=='1')) digitalWrite(WTHEAT, HIGH);
+    if ((cmd=='9') and (state=='0')) digitalWrite(WTHEAT, LOW);
+    if (!((cmd <= 9) and (cmd >=0))) print_commands();
     Serial.println(digitalRead(ROLE1));
     Serial.println(digitalRead(ROLE2));
     Serial.println(digitalRead(ROLE3));
     Serial.println(digitalRead(ROLE4));
     Serial.println(digitalRead(ROLE6));
-    int analog1 = analogRead(SENSOR1);
-    int analog2 = analogRead(SENSOR2);
-    int analog3 = analogRead(SENSOR3);
+    int ovent_temp  = analogRead(SENS_OTMP);
+    int water_level = analogRead(SENS_WLVL);
+    int water_temp  = analogRead(SENS_WTMP);
     Serial.print("Oven Temp = ");
-    Serial.println(analog1);
+    Serial.println(ovent_temp);
     Serial.print("Water Level = ");
-    Serial.println(analog2);
+    Serial.println(water_level);
     Serial.print("Water Temp  = ");
-    Serial.println(analog3);
+    Serial.println(water_temp);
     commandComplete = false;
  } //if
  
@@ -118,8 +121,8 @@ void serialEvent() {
       commandComplete = true;
       //Serial.println(commandString[0]);
       //Serial.println(commandString[1]);
-      komut = commandString[0];
-      konum = commandString[1];
+      cmd = commandString[0];
+      state = commandString[1];
       commandString="";
     }
   }
