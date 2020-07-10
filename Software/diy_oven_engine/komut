@@ -1,1 +1,6 @@
+#!/bin/bash
+
 scp .pio/build/nanoatmega328/firmware.hex root@192.168.8.88:
+ssh root@192.168.8.88 avrdude -v -patmega328p -carduino -P/dev/ttyUSB0 -b57600 -D -Uflash:w:firmware.hex:i
+ssh root@192.168.8.88 picocom --omap crcrlf -c -b 9600 /dev/ttyUSB0
+

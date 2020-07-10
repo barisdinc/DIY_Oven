@@ -57,9 +57,9 @@ void setup() {
   pinMode(WTHEAT,   OUTPUT);
   pinMode(EEPROM_ENABLE, OUTPUT);
   pinMode(V220,    INPUT);
-  pinmode(SENS_OTMP, INPUT);
-  pinmode(SENS_WLVL, INPUT);
-  pinmode(SENS_WTMP, INPUT);
+  pinMode(SENS_OTMP, INPUT);
+  pinMode(SENS_WLVL, INPUT);
+  pinMode(SENS_WTMP, INPUT);
 
 }
 void loop() {
@@ -90,9 +90,9 @@ void loop() {
     Serial.println(digitalRead(ROLE3));
     Serial.println(digitalRead(ROLE4));
     Serial.println(digitalRead(ROLE6));
-    int ovent_temp  = analogRead(SENS_OTMP);
-    int water_level = analogRead(SENS_WLVL);
-    int water_temp  = analogRead(SENS_WTMP);
+    analogRead(SENS_OTMP); int ovent_temp  = analogRead(SENS_OTMP);
+    analogRead(SENS_WLVL); int water_level = analogRead(SENS_WLVL);
+    analogRead(SENS_WTMP); int water_temp  = analogRead(SENS_WTMP);
     Serial.print("Oven Temp = ");
     Serial.println(ovent_temp);
     Serial.print("Water Level = ");
