@@ -1,0 +1,1 @@
+/usr/bin/vncserver -display :0 localhost
